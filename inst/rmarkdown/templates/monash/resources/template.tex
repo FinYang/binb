@@ -78,6 +78,21 @@ $if(titlefontsize)$
   \setbeamerfont{title}{series=\bfseries,parent=structure,size=\fontsize{$titlefontsize$}{32}}
 $endif$
 
+\author{$for(author)$$author.name$$sep$, $endfor$}
+\makeatletter
+\def\addresses#1{\gdef\@addresses{#1}}
+% author page
+$if(author-page)$
+\addresses{$for(author)$
+\textbf{$author.name$}
+$if(author.address)$\newline{$author.address$}$else$$endif$
+$if(author.email)$\newline{Email: $author.email$}$else$$endif$\\[1cm]
+$endfor$
+}
+$endif$
+\let\authorpage\@addresses
+\makeatother
+
 % Title page
 \setbeamertemplate{title page}
 {\placefig{-0.01}{-0.01}{width=1.01\paperwidth,height=1.01\paperheight}{$if(titlepage)$$titlepage$$else$titlepage$endif$}
@@ -296,15 +311,11 @@ $if(subtitle)$
   \subtitle{$subtitle$}
 $endif$
 
-$if(author)$
-  \author[
-    $if(short-author)$
-    $for(short-author)$$short-author$$sep$ \and $endfor$
-  $else$
-    $for(author)$$author$$sep$ \and $endfor$
-  $endif$
-  ]{$for(author)$$author$$sep$ \and $endfor$}
-$endif$
+
+
+
+
+
 
 $if(institute)$
   \institute[
@@ -347,6 +358,13 @@ $if(title)$
   \titlepage
   \end{frame}
 $endif$
+
+$if(author-page)$
+  \begin{frame}{Authors}
+  \authorpage
+  \end{frame}
+$endif$
+
 
 $for(include-before)$
   $include-before$
